@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="contenedor-formulario contenedor">
+    <div class="imagen-formulario">
+        <img src="{% static 'imagenes/redycom.jpeg' %}">
+    </div>
+    
+    <form name="form" class="formulario">
+        <div class="texto-formulario">
+            <h2>Bienvenidos al sistema</h2>
+
+            <p>Inicia sesión con tu cuenta</p>
+        </div>
+
+        <div class="input">
+            <label for="usuario">Usuario</label>
+            <input placeholder="Ingresa tu nombre" type="text" name="usuario" id="usuario"
+            required>
+        </div>
+
+        <div class="input">
+            <label for="contraseña">Contraseña</label>
+            <input placeholder="Ingresa tu contraseña" type="password" name="password" id="password" required>
+        </div>
+
+        <div class="password-olvidada">
+            <a href="">Registrarse</a>
+        </div>
+
+        <button class="btn btn-primary">Ingresar</button>
+    </form>
+</div>
+
+{% endblock %}

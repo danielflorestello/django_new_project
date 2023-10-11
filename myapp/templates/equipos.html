@@ -1,0 +1,71 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h3 class="container mt-3">REGISTRO DE EQUIPOS</h3><hr>
+
+<div class="container">
+    <div class="card border-primary h-100 py-2">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <a id="agregarEquipos" class="btn btn-outline-success">Agregar Equipo</a>
+                </div>
+
+                <div class="col">
+                    <form class="form-inline my-2 my-lg-0">
+                        <a>Buscar: </a>
+                        <input class="form-control-sm" type="search" placeholder="Search" aria-label="Search">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="card border-dark">
+        <div class="card-body">
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>Codigo SAP</th>
+                        <th>Serie</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Fecha</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <c:forEach var="e" items="${lista}">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>S/</td>
+                            <td></td>
+                            <td>
+                                <a href="" class="btn btn-outline-warning">
+                                    <span class="bi bi-pencil-square">Editar</span>
+                                </a>
+
+                                <a id="eliminarEquipo" class="btn btn-outline-danger">
+                                    <input type="hidden" id="idEquipo" name="idEquipo" value="${e.getIdEquipo()}">
+                                    <span class="bi bi-trash">Eliminar</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
