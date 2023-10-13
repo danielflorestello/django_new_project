@@ -9,26 +9,28 @@
         <img src="{% static 'imagenes/redycom.jpeg' %}">
     </div>
     
-    <form name="form" class="formulario">
+    <form action="/signin/" method="post" class="formulario">
         <div class="texto-formulario">
             <h2>Bienvenidos al sistema</h2>
-
             <p>Inicia sesión con tu cuenta</p>
         </div>
 
+        {{error}}
+
+        {% csrf_token %}
+
         <div class="input">
-            <label for="usuario">Usuario</label>
-            <input placeholder="Ingresa tu nombre" type="text" name="usuario" id="usuario"
-            required>
+            <label for="username">Usuario</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Ingrese su usuario" required>
         </div>
 
         <div class="input">
             <label for="contraseña">Contraseña</label>
-            <input placeholder="Ingresa tu contraseña" type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese su Contraseña" required>
         </div>
 
         <div class="password-olvidada">
-            <a href="">Registrarse</a>
+            <a href="/signup">Registrarse</a>
         </div>
 
         <button class="btn btn-primary">Ingresar</button>
