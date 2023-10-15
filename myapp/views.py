@@ -14,17 +14,22 @@ def index(request):
 
 @login_required
 def principal(request):
-    return render(request, 'principal.html')
+    return render(request, 'empleado/principal.html')
 
 
 @login_required
 def equipos(request):
-    return render(request, 'equipos.html')
+    return render(request, 'empleado/equipos.html')
 
 
 @login_required
 def recomendacion(request):
-    return render(request, 'recomendacion.html')
+    return render(request, 'empleado/recomendacion.html')
+
+
+@login_required
+def admin_principal(request):
+    return render(request, 'administrador/admin_principal.html')
 
 
 def signup(request):
