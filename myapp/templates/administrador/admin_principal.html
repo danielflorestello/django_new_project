@@ -14,7 +14,9 @@
                             <th>Gestión de Usuarios</th>
                             
                             <td>
-                                <button class="btn btn-outline-success">
+                                <a class="btn btn-outline-primary" href="{% url 'usuarios' %}">Mostrar</a>
+
+                                <button id="agregarUsuarios" class="btn btn-outline-success">
                                     <i class="bi bi-plus"></i> Agregar
                                 </button>
                             </td>
@@ -24,17 +26,21 @@
                             <th>Gestión de Servicios</th>
                             
                             <td>
-                                <button class="btn btn-outline-success">
+                                <a class="btn btn-outline-primary" href="{% url 'servicios' %}">Mostrar</a>
+
+                                <button id="agregarServicios" class="btn btn-outline-success">
                                     <i class="bi bi-plus"></i> Agregar
                                 </button>
                             </td>
                         </tr>
 
                         <tr>
-                            <th>Gestión de Tipos de Pedidos</th>
+                            <th>Gestión de Tipos de Equipos</th>
                             
                             <td>
-                                <button class="btn btn-outline-success">
+                                <a class="btn btn-outline-primary" href="{% url 'tipos_equipos' %}">Mostrar</a>
+                                
+                                <button id="agregarTipo" class="btn btn-outline-success">
                                     <i class="bi bi-plus"></i> Agregar
                                 </button>
                             </td>

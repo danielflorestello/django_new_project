@@ -1,5 +1,7 @@
 {% extends 'layouts/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <div class="container py-5 h-100">
@@ -12,16 +14,41 @@
                         </div>-->
 
                 <div class="card-body">
-                    <div class="container py-5">
+                    <div class="container text-center">
+                        <label class="py-3 fw-bold">SERVICIO SOLICITADO</label>
+
                         <select class="form-select text-center" aria-label="Default select example">
-                            <option selected> SERVICIO SOLICITADO </option>
+                            <option selected> ------------------ </option>
                         </select>
                     </div>
 
-                    <div class="container py-5">
-                        <select class="form-select text-center" aria-label="Default select example">
-                            <option selected> TIPO DE EQUIPO </option>
-                        </select>
+                    <div class="container text-center">
+                        <label class="py-3 fw-bold">TIPO DE EQUIPO</label>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>TARJETAS</label>
+                                <button>
+                                    
+                                    <img src="{% static 'imagenes/tarjeta.jpeg' %}" style="height: 50px;">
+                                </button>
+                            </div>
+
+                            <div class="col">
+                                <label>MÓDULO</label>
+                                <img src="{% static 'imagenes/modulo.jpeg' %}" style="height: 50px;">
+                            </div>
+
+                            <div class="col">
+                                <label>MÓDULO MG</label>
+                                <img src="{% static 'imagenes/modulo mg.jpeg' %}" style="height: 50px;">
+                            </div>
+
+                            <div class="col">
+                                <label>TMETRO CLARO</label>
+                                <img src="{% static 'imagenes/tmetro.jpeg' %}" style="height: 50px;">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card-footer text-center py-3">

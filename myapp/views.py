@@ -4,12 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import Servicio, Tipo
+import pandas as pd
 
 # Create your views here.
 
 
 def index(request):
     return render(request, 'index.html')
+
+
+# --------------------------------------------------------------------
 
 
 @login_required
@@ -19,7 +25,12 @@ def principal(request):
 
 @login_required
 def equipos(request):
-    return render(request, 'empleado/equipos.html')
+    file_path = 'A143_ALMACEN PINT-PMO - REDYCOM.xlsm'
+    df = pd.read_excel(file_path, engine='openpyxl')
+
+    data = df[['DESCRIPCION', 'CAN']]
+    
+    return render(request, 'empleado/equipos.html', {'data': data})
 
 
 @login_required
@@ -27,9 +38,60 @@ def recomendacion(request):
     return render(request, 'empleado/recomendacion.html')
 
 
+# ------------------------------------------------------------------
+
+
 @login_required
 def admin_principal(request):
     return render(request, 'administrador/admin_principal.html')
+
+
+@login_required
+def servicios(request):
+    servicios = Servicio.objects.all()
+    return render(request, 'administrador/servicios/servicios.html', {'servicios': servicios})
+
+@login_required
+def agregarServicios(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+
+        if nombre:
+            Servicio.objects.create(nombre=nombre)
+            return JsonResponse({'success': True})  # Devuelve una respuesta JSON de éxito
+            
+    return JsonResponse({'success': False})  # Devuelve una respuesta JSON de error
+
+
+@login_required
+def usuarios(request):
+    usuarios = User.objects.all()
+    return render(request, 'administrador/usuarios/usuarios.html', {'usuarios': usuarios})
+
+
+@login_required
+def tipos_equipos(request):
+    tipos = Tipo.objects.all()
+    return render(request, 'administrador/tipos/tipos.html', {'tipos': tipos})
+
+
+@login_required
+def agregarTipos(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        imagen = request.FILES.get('imagen')
+
+        try:
+            Tipo.objects.create(nombre=nombre, imagen=imagen)
+            return JsonResponse({'success': True})  # Devuelve una respuesta JSON de éxito
+        
+        except:
+            return JsonResponse({'success': False})  # Devuelve una respuesta JSON de error
+        
+    else:
+        return JsonResponse({'success': False})  # Devuelve una respuesta JSON de error
+
+# -------------------------------------------------------------------
 
 
 def signup(request):
