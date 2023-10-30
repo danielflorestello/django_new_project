@@ -1,7 +1,7 @@
 /* global Swal */
 
 $(document).ready(function () {
-    
+
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -16,27 +16,26 @@ $(document).ready(function () {
         }
         return cookieValue;
     }
-    
+
     const csrftoken = getCookie('csrftoken');
 
     /****************************************************/
 
     $("tr #agregarServicios").click(function () {
-        
-        Swal.fire({
-            title:  'Datos de Servicios',
 
-            html:   '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Nombre</span>' +
-                        '<input type="text" id="nombre" class="form-control" required>' +
-                    '</div>',
-                    
+        Swal.fire({
+            title: 'Datos de Servicios',
+
+            html: '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Nombre</span>' +
+                '<input type="text" id="nombre" class="form-control" required>' +
+                '</div>',
+
             focusConfirm: false,
             allowOutsideClick: false,
             showCancelButton: true,
             confirmButtonText: "Guardar",
             cancelButtonText: "Cancelar",
-            dangerMode: true,
 
             preConfirm: () => {
                 const nombre = Swal.getPopup().querySelector('#nombre').value
@@ -52,28 +51,81 @@ $(document).ready(function () {
                 $.ajax({
                     type: 'POST',
                     url: '/administrador/agregarServicios',
-                    
+
                     data: {
-                        nombre: result.value.nombre,
+                        nombre: result.value.nombre
                     },
 
-                    beforeSend: function(xhr, settings) {
+                    beforeSend: function (xhr) {
                         if (!this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
                         }
                     },
-                    
+
                     success: function () {
                         Swal.fire('Servicio registrado', 'El servicio se ha registrado con éxito.', 'success');
                     },
 
-                    error: function() {
+                    error: function () {
                         Swal.fire('Error', 'Hubo un problema al registrar el servicio. Inténtalo de nuevo.', 'error');
                     }
                 });
-                
+
             } else {
                 Swal.fire("¡Registro no guardado!");
+            }
+        })
+
+    });
+
+    /****************************************************/
+
+    $("tr #eliminarServicio").click(function () {
+        var servicio_id = $(this).data('servicio-id');
+
+        Swal.fire({
+            title: '¿Está Seguro de Eliminar?',
+            text: '¡Una vez eliminado, Ud. puede agregar de nuevo!',
+            icon: 'warning',
+            focusConfirm: false,
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonText: "Eliminar",
+            backdrop: true,
+            cancelButtonText: "Cancelar",
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/administrador/servicios/${servicio_id}/eliminar`,
+
+                    beforeSend: function (xhr) {
+                        if (!this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                        }
+                    },
+
+                    success: function () {
+                        Swal.fire(
+                            'Servicio eliminado', 'El servicio se ha eliminado con éxito.', 'success'
+
+                        ).then((result) => {
+
+                            if (result.isConfirmed) {
+                                parent.location.href = '/administrador/servicios'
+                            }
+                        });
+                    },
+
+                    error: function () {
+                        Swal.fire('Error', 'Hubo un problema al eliminar el servicio. Inténtalo de nuevo.', 'error');
+                    }
+                });
+
+            } else {
+                Swal.fire("¡Registro no eliminado!");
             }
         })
 

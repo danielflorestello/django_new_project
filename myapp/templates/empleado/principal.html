@@ -18,36 +18,47 @@
                         <label class="py-3 fw-bold">SERVICIO SOLICITADO</label>
 
                         <select class="form-select text-center" aria-label="Default select example">
+                            {% if servicios %}
+
                             <option selected> ------------------ </option>
+
+                            {% for servicio in servicios %}
+
+                            <option value="{{servicio.id}}"> {{servicio.nombre}} </option>
+
+                            {% endfor %}
+
+                            {% else %}
+
+                            <option> No hay servicios disponibles </option>
+
+                            {% endif %}
                         </select>
                     </div>
 
-                    <div class="container text-center">
+                    <div class="container text-center py-5">
                         <label class="py-3 fw-bold">TIPO DE EQUIPO</label>
 
                         <div class="row">
-                            <div class="col">
-                                <label>TARJETAS</label>
-                                <button>
+                            {% if tipos %}
+                            
+                                {% for tipo in tipos %}
+
+                                <div class="col">
+                                    <label> {{tipo.nombre}} </label>
                                     
-                                    <img src="{% static 'imagenes/tarjeta.jpeg' %}" style="height: 50px;">
-                                </button>
-                            </div>
+                                    <button class="btn">
+                                        <img src="{{tipo.imagen.url}}" style="height: 100px;" class="rounded">
+                                    </button>                                   
+                                </div>
 
-                            <div class="col">
-                                <label>MÓDULO</label>
-                                <img src="{% static 'imagenes/modulo.jpeg' %}" style="height: 50px;">
-                            </div>
+                                {% endfor %}
 
-                            <div class="col">
-                                <label>MÓDULO MG</label>
-                                <img src="{% static 'imagenes/modulo mg.jpeg' %}" style="height: 50px;">
-                            </div>
+                            {% else %}
 
-                            <div class="col">
-                                <label>TMETRO CLARO</label>
-                                <img src="{% static 'imagenes/tmetro.jpeg' %}" style="height: 50px;">
-                            </div>
+                                <label> No hay tipos de equipos disponibles </label>
+
+                            {% endif %}
                         </div>
                     </div>
 

@@ -28,11 +28,11 @@ $(document).ready(function () {
 
             html:   '<div class="input-group mb-3">' +
                         '<span class="input-group-text">Nombre</span>' +
-                        '<input type="text" id="nombre" class="form-control" required>' +
+                        '<input type="text" id="nombre" class="form-control">' +
                     '</div>' +
                     
                     '<div class="input-group mb-3">' +
-                        '<input type="file" id="imagen" class="form-control">' +
+                        '<input type="file" id="imagen" class="form-control" accept="image/*">' +
                     '</div>',
                     
             focusConfirm: false,
@@ -40,10 +40,9 @@ $(document).ready(function () {
             showCancelButton: true,
             confirmButtonText: "Guardar",
             cancelButtonText: "Cancelar",
-            dangerMode: true,
 
             preConfirm: () => {
-                const nombre = Swal.getPopup().querySelector('#nombre').value;
+                const nombre = Swal.getPopup().querySelector('#nombre').value
                 const imagen = Swal.getPopup().querySelector('#imagen').files[0]
                 
                 if (!nombre | !imagen) {
@@ -54,21 +53,21 @@ $(document).ready(function () {
 
         }).then((result) => {
             if (result.isConfirmed) {
+
+                var formData = new FormData();
+                formData.append('nombre', result.value.nombre);
+                formData.append('imagen', result.value.imagen)
+
                 $.ajax({
                     type: 'POST',
-                    url: '/administrador/agregarTipos',
-                    
-                    data: {
-                        nombre: result.value.nombre,
-                        imagen: result.value.imagen
-                    },
-
+                    url: '/administrador/agregarTipos',              
+                    data: formData,
+                    contentType: false,
                     processData: false,
-                    contextType: false,
-
-                    beforeSend: function(xhr, settings) {
+                    
+                    beforeSend: function(xhr) {
                         if (!this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
                         }
                     },
                     
@@ -83,6 +82,59 @@ $(document).ready(function () {
                 
             } else {
                 Swal.fire("¡Registro no guardado!");
+            }
+        })
+
+    });
+
+    /****************************************************/
+
+    $("tr #eliminarTipo").click(function () {
+        var tipo_id = $(this).data('tipo-id');
+
+        Swal.fire({
+            title: '¿Está Seguro de Eliminar?',
+            text: '¡Una vez eliminado, Ud. puede agregar de nuevo!',
+            icon: 'warning',
+            focusConfirm: false,
+            allowOutsideClick: false,
+            showCancelButton: true,
+            confirmButtonText: "Eliminar",
+            backdrop: true,
+            cancelButtonText: "Cancelar",
+
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/administrador/tipos/${tipo_id}/eliminar`,
+
+                    beforeSend: function (xhr) {
+                        if (!this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                        }
+                    },
+
+                    success: function () {
+                        Swal.fire(
+                            'Tipo de equipo eliminado', 'El tipo de equipo se ha eliminado con éxito.', 'success'
+
+                        ).then((result) => {
+
+                            if (result.isConfirmed) {
+                                parent.location.href = '/administrador/tipos'
+                            }
+                        });
+                    },
+
+                    error: function () {
+                        Swal.fire('Error', 'Hubo un problema al eliminar el tipo de equipo. Inténtalo de nuevo.', 'error');
+                    }
+                });
+
+            } else {
+                Swal.fire("¡Registro no eliminado!");
             }
         })
 

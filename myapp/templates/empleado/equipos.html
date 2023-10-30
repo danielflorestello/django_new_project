@@ -4,8 +4,29 @@
 
 {% block content %}
 
-<div class="container">
-    
-</div>
+<div class="container py-5">
+    <div class="row-fluid justify-content-center">
+        <div class="card border-dark">
+            <div class="card-header text-center fw-bold">LISTA DE EQUIPOS DISPONIBLES</div>
 
+            <div class="card-body">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>DESCRIPCION</th>
+                            <th>CANTIDAD</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>{{ data.DESCRIPCION | safe }}</td>
+                            <td>{{ data.CAN | safe }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

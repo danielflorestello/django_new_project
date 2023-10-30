@@ -8,7 +8,9 @@
             <div class="card-header text-center fw-bold">LISTA DE SERVICIOS</div>
 
             <div class="card-body">
-                <table class="table table-hover text-center">
+                {% if servicios %}
+
+                <table class="table table-hover table-striped text-center">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -20,13 +22,13 @@
                     <tbody>
                         {% for servicio in servicios %}
 
-                        <tr>
+                        <tr class="align-middle">
                             <td>{{servicio.id}}</td>
                             <td>{{servicio.nombre}}</td>
                             <td>
-                                <button class="btn btn-outline-warning">Modificar</button>
+                                <a class="btn btn-outline-warning" href="{% url 'editarServicios' servicio.id %}">Modificar</a>
 
-                                <button class="btn btn-outline-danger">
+                                <button id="eliminarServicio" data-servicio-id="{{ servicio.id }}" class="btn btn-outline-danger">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -35,6 +37,12 @@
                         {% endfor %}
                     </tbody>
                 </table>
+
+                {% else %}
+
+                <p class="text-center">No hay datos registrados todavía</p>
+                
+                {% endif %}
             </div>
         </div>
     </div>

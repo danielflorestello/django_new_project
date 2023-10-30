@@ -23,14 +23,18 @@
                     <tbody>
                         {% for tipo in tipos %}
 
-                        <tr>
+                        <tr class="align-middle">
                             <td>{{tipo.id}}</td>
                             <td>{{tipo.nombre}}</td>
-                            <td>{{tipo.imagen}}</td>
-                            <td>
-                                <button class="btn btn-outline-warning">Modificar</button>
 
-                                <button class="btn btn-outline-danger">
+                            <td>
+                                <img src="{{tipo.imagen.url}}" style="height: 100px;">
+                            </td>
+
+                            <td>
+                                <a class="btn btn-outline-warning" href="{% url 'editarTipos' tipo.id %}">Modificar</a>
+
+                                <button id="eliminarTipo" data-tipo-id="{{ tipo.id }}" class="btn btn-outline-danger">
                                     <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             </td>
