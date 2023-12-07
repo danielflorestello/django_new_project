@@ -89,8 +89,21 @@ $(document).ready(function () {
                         }
                     },
                     
-                    success: function () {
-                        Swal.fire('Usuario registrado', 'El usuario se ha registrado con éxito.', 'success');
+                    success: function (response) {
+                        if (response.mensaje !== undefined && response.mensaje !== null) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.mensaje,
+                            })
+
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Usuario registrado',
+                                text: 'El usuario se ha registrado con éxito.'
+                            })
+                        }
                     },
 
                     error: function() {

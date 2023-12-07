@@ -71,17 +71,30 @@ $(document).ready(function () {
                         }
                     },
                     
-                    success: function () {
-                        Swal.fire('Tipo de equipo registrado', 'El Tipo de equipo se ha registrado con éxito.', 'success');
+                    success: function (response) {
+                        if (response.mensaje !== undefined && response.mensaje !== null) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.mensaje,
+                            })
+
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Tipo de equipo registrado',
+                                text: 'El tipo de equipo se ha registrado con éxito.'
+                            })
+                        }
                     },
 
                     error: function() {
-                        Swal.fire('Error', 'Hubo un problema al registrar el tipo de equipo. Inténtalo de nuevo.', 'error');
+                        Swal.fire('Error', 'Hubo un problema al registrar el tipo de equipo. Inténtalo de nuevo.', 'error')
                     }
                 });
                 
             } else {
-                Swal.fire("¡Registro no guardado!");
+                Swal.fire("¡Registro no guardado!")
             }
         })
 
@@ -129,12 +142,12 @@ $(document).ready(function () {
                     },
 
                     error: function () {
-                        Swal.fire('Error', 'Hubo un problema al eliminar el tipo de equipo. Inténtalo de nuevo.', 'error');
+                        Swal.fire('Error', 'Hubo un problema al eliminar el tipo de equipo. Inténtalo de nuevo.', 'error')
                     }
                 });
 
             } else {
-                Swal.fire("¡Registro no eliminado!");
+                Swal.fire("¡Registro no eliminado!")
             }
         })
 

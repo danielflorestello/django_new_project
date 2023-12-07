@@ -7,12 +7,10 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="card border-dark">
-            <div class="card-header text-center fw-bold">LISTA DE EQUIPOS</div>
+            <div class="card-header text-center fw-bold">INVENTARIO DE EQUIPOS</div>
 
             <div class="card-body">
-                <button id="agregarEquipos" class="btn btn-outline-success">Agregar</button>
-
-                {% if equipos %}
+                {% if inventarios %}
 
                 <table class="table table-hover text-center">
                     <thead>
@@ -25,13 +23,13 @@
                     </thead>
 
                     <tbody>
-                        {% for equipo in equipos %}
+                        {% for inventario in inventarios %}
 
                         <tr>
-                            <td>{{equipo.cod_sap}}</td>
-                            <td>{{equipo.serie}}</td>
-                            <td>{{equipo.descripcion}}</td>
-                            <td>{{equipo.cantidad}}</td>
+                            <td>{{inventario.equipo.cod_sap}}</td>
+                            <td>{{inventario.equipo.serie}}</td>
+                            <td>{{inventario.equipo.descripcion}}</td>
+                            <td>{{inventario.cantidad_disponible}}</td>
                         </tr>
 
                         {% endfor %}
@@ -46,6 +44,7 @@
                 {% endif %}
             </div>
         </div>
+
     </div>
 </div>
 {% endblock %}

@@ -5,8 +5,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import Servicio, Tipo
-import pandas as pd
+from .models import Servicio, Tipo, Equipo, Inventario, Recomendacion, DetalleRecomendacion, Caso, DetalleCaso
+from django.db.models import Sum
+from collections import defaultdict
 import os
 
 # Create your views here.
@@ -16,7 +17,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-# --------------------------------------------------------------------
+########################################################################
 
 
 @login_required
@@ -28,23 +29,161 @@ def principal(request):
         'tipos': tipos
     })
 
+# --------------------------------------------------------------------
+
 
 @login_required
 def equipos(request):
-    file_path = 'A143_ALMACEN PINT-PMO - REDYCOM.xlsm'
-    df = pd.read_excel(file_path, engine='openpyxl')
+    equipos = Equipo.objects.all()
+    return render(request, 'empleado/equipos.html', {'equipos': equipos})
 
-    data = df[['DESCRIPCION', 'CAN']]
 
-    return render(request, 'empleado/equipos.html', {'data': data})
+@login_required
+def agregarEquipos(request):
+    if request.method == 'POST':
+        cod_sap = request.POST.get('cod_sap')
+        serie = request.POST.get('serie')
+        descripcion = request.POST.get('descripcion')
+        cantidad = int(request.POST.get('cantidad'))
+
+        inventario_existente = Inventario.objects.filter(
+            equipo__cod_sap=cod_sap,
+            equipo__serie=serie,
+            equipo__descripcion=descripcion
+        ).first()
+
+        equipo = Equipo.objects.create(
+            cod_sap=cod_sap,
+            serie=serie,
+            descripcion=descripcion,
+            cantidad=cantidad
+        )
+
+        equipo.save()
+
+        if inventario_existente:
+            inventario_existente.cantidad_disponible += cantidad
+            inventario_existente.save()
+
+            # Devuelve una respuesta JSON de éxito
+            return JsonResponse({'success': True})
+
+        else:
+
+            nuevo_inventario = Inventario.objects.create(
+                equipo=equipo,
+                cantidad_disponible=cantidad
+            )
+
+            nuevo_inventario.save()
+
+            return JsonResponse({'success': True})
+
+    else:
+        # Devuelve una respuesta JSON de error
+        return JsonResponse({'success': False})
+
+
+@login_required
+def inventario(request):
+    inventarios = Inventario.objects.all()
+    return render(request, 'empleado/inventario.html', {'inventarios': inventarios})
 
 
 @login_required
 def recomendacion(request):
-    return render(request, 'empleado/recomendacion.html')
+    recomendaciones = Recomendacion.objects.all()
+    detalles = DetalleRecomendacion.objects.all()
+
+    return render(request, 'empleado/recomendacion.html', {
+        'listado': recomendaciones,
+        'detalles': detalles
+        })
 
 
-# ------------------------------------------------------------------
+@login_required
+def equipos_recomendados(request):
+    servicio_id = request.POST.get('servicio_id')
+    tipo_id = request.POST.get('tipo_id')
+
+    servicio = Servicio.objects.get(id=servicio_id)
+    tipo = Tipo.objects.get(id=tipo_id)
+
+    lista = recomendacion_rbc(servicio, tipo)
+
+    return render(request, 'empleado/equipos_recomendados.html', {
+        'servicio': servicio,
+        'tipo': tipo,
+        'lista': lista
+    })
+
+
+def recomendacion_rbc(servicio, tipo):
+    recomendados = []
+
+    # Obtener todos los casos para el servicio y tipo de acceso dados
+    casos = Caso.objects.filter(
+        servicio=servicio, tipo=tipo)
+
+    # Obtener casos parecidas para el servicio y tipo de acceso dados
+    if not casos:
+        casos = Caso.objects.filter(
+            servicio=servicio).exclude(tipo=tipo).distinct()
+
+    # Iterar sobre los casos y sumar las cantidades devueltas por equipo
+    for caso in casos:
+        detalle_casos = DetalleCaso.objects.filter(
+            caso_id=caso)
+        
+        for detalle in detalle_casos:
+            cantidad_recomendada = 0
+
+            if detalle.cantidad_devuelta > 0:
+                cantidad_recomendada = detalle.cantidad - detalle.cantidad_devuelta
+
+            else:
+                cantidad_recomendada = detalle.cantidad
+
+            recomendados.append({
+                'detalle': detalle,
+                'cantidad_recomendada':  cantidad_recomendada
+            })
+
+    return recomendados
+
+
+def agregarRecomendacion(request):
+    if request.method == 'POST':
+        servicio_id = request.POST.get('servicio_id')
+        tipo_id = request.POST.get('tipo_id')
+
+        # Guarda recomendación y el caso para futuras recomendaciones
+
+        recomendacion = Recomendacion.objects.create(
+            servicio_id=servicio_id,
+            tipo_id=tipo_id
+        )
+
+        recomendacion.save()
+
+        # Detalles de recomendacion y casos
+
+        for i in range(len(request.POST.getlist('cantidad'))):
+            cantidad = request.POST.getlist('cantidad')[i]
+            equipo_id = request.POST.getlist('equipo_id')[i]
+
+            detalle_recomendacion = DetalleRecomendacion.objects.create(
+                equipo_id=equipo_id,
+                cantidad_recomendada=cantidad,
+                recomendacion=recomendacion
+            )
+
+            detalle_recomendacion.save()
+
+    return redirect('principal')
+
+
+########################################################################
 
 
 @login_required
@@ -66,7 +205,11 @@ def agregarServicios(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
 
-        if nombre:
+        if Servicio.objects.filter(nombre__iexact=nombre).exists():
+            mensaje = 'El equipo ya existe.'
+            return JsonResponse({'mensaje': mensaje})
+
+        else:
             servicio = Servicio.objects.create(nombre=nombre)
             servicio.save()
 
@@ -128,7 +271,11 @@ def agregarUsuarios(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if first_name and last_name and email and username and password:
+        if Servicio.objects.filter(first_name__iexact=first_name, last_name__iexact=last_name).exists():
+            mensaje = 'El usuario ya existe.'
+            return JsonResponse({'mensaje': mensaje})
+
+        else:
             user = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
@@ -206,7 +353,11 @@ def agregarTipos(request):
         nombre = request.POST.get('nombre')
         imagen = request.FILES.get('imagen')
 
-        if nombre and imagen:
+        if Tipo.objects.filter(nombre__iexact=nombre).exists():
+            mensaje = 'El tipo de equipo ya existe.'
+            return JsonResponse({'mensaje': mensaje})
+
+        else:
             tipo = Tipo.objects.create(nombre=nombre, imagen=imagen)
             tipo.save()
             # Devuelve una respuesta JSON de éxito
@@ -267,36 +418,6 @@ def eliminarTipos(request, tipo_id):
 # -------------------------------------------------------------------
 
 
-def signup(request):
-    if request.method == 'GET':
-        return render(request, 'signup.html', {
-            'form': UserCreationForm
-        })
-
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'])
-
-                user.save()
-
-                login(request, user)
-
-                return redirect('principal')
-
-            except IntegrityError:
-                return render(request, 'signup.html', {
-                    'form': UserCreationForm,
-                    'error': "Username already exist"
-                })
-
-        return render(request, 'signup.html', {
-            'form': UserCreationForm,
-            'error': "Password do not match"
-        })
-
-
 def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -317,7 +438,9 @@ def signin(request):
                 return redirect('admin_principal')
 
         else:
-            return render(request, 'index.html')
+            return render(request, 'index.html', {
+                'error': "Usuario o contraseña incorrecta"
+            })
 
     else:
         return render(request, 'index.html', {

@@ -13,7 +13,11 @@ urlpatterns = [
 
     path('principal/', views.principal, name='principal'),
     path('equipos/', views.equipos, name='equipos'),
+    path('agregarEquipos/', views.agregarEquipos, name='agregarEquipos'),
+    path('inventario/', views.inventario, name='inventario'),
     path('recomendacion/', views.recomendacion, name='recomendacion'),
+    path('equipos_recomendados/', views.equipos_recomendados, name='equipos_recomendados'),
+    path('agregarRecomendacion/', views.agregarRecomendacion, name='agregarRecomendacion'),
 
     # -------------------------------------------------------------------------------
 
@@ -35,8 +39,7 @@ urlpatterns = [
     path('administrador/tipos/<int:tipo_id>/eliminar', views.eliminarTipos, name='eliminarTipos'),
 
     # --------------------------------------------------------------------------------
-
-    path('signup/', views.signup, name='signup'),
+    
     path('signin/', views.signin, name='signin'),
     path('logout/', views.signout, name='logout'),
 ]

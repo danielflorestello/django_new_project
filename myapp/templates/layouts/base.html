@@ -43,16 +43,17 @@
                     {% for group in user.groups.all %}
 
                     {% if group.name == 'usuario' %}
+
                     <li>
                         <a class="nav-link" href="{% url 'principal' %}">Principal</a>
                     </li>
 
                     <li>
-                        <a class="nav-link" href="">Recomendaciones Realizadas</a>
+                        <a class="nav-link" href="{% url 'equipos' %}">Equipos</a>
                     </li>
-
+                    
                     <li>
-                        <a class="nav-link" href="{% url 'equipos' %}">Equipos Disponibles</a>
+                        <a class="nav-link" href="{% url 'recomendacion' %}">Recomendaciones Realizadas</a>
                     </li>
 
                     {% else %}
@@ -79,7 +80,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">{{user.first_name}}, {{user.last_name}}</a>
+                            aria-expanded="false">{{user.first_name}} {{user.last_name}}</a>
 
                         <ul class="dropdown-menu">
                             <li><a class="nav-link text-center" href="/logout">Cerrar Sesión</a></li>
@@ -97,5 +98,6 @@
     <script src="{% static 'js/servicios.js' %}"></script>
     <script src="{% static 'js/usuarios.js' %}"></script>
     <script src="{% static 'js/tipo.js' %}"></script>
+    <script src="{% static 'js/equipos.js' %}"></script>
 </body>
 </html>

@@ -62,12 +62,25 @@ $(document).ready(function () {
                         }
                     },
 
-                    success: function () {
-                        Swal.fire('Servicio registrado', 'El servicio se ha registrado con éxito.', 'success');
+                    success: function (response) {
+                        if (response.mensaje !== undefined && response.mensaje !== null) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.mensaje,
+                            })
+
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Servicio registrado',
+                                text: 'El servicio se ha registrado con éxito.'
+                            })
+                        }
                     },
 
                     error: function () {
-                        Swal.fire('Error', 'Hubo un problema al registrar el servicio. Inténtalo de nuevo.', 'error');
+                        Swal.fire('Error', 'Hubo un problema al registrar el servicio. Inténtalo de nuevo.', 'error')
                     }
                 });
 
