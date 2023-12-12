@@ -1,13 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import login, logout, authenticate
-from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Servicio, Tipo, Equipo, Inventario, Recomendacion, DetalleRecomendacion, Caso, DetalleCaso
-from django.db.models import Sum
-from collections import defaultdict
 import os
 
 # Create your views here.

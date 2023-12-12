@@ -66,3 +66,4 @@ class DetalleCaso(models.Model):
     cantidad_devuelta = models.IntegerField(default=0)
     equipo = models.ForeignKey(Equipo, on_delete=models.CASCADE)
     caso = models.ForeignKey(Caso, on_delete=models.CASCADE)
+    
