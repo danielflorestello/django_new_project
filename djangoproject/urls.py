@@ -16,33 +16,44 @@ urlpatterns = [
     path('agregarEquipos/', views.agregarEquipos, name='agregarEquipos'),
     path('inventario/', views.inventario, name='inventario'),
     path('recomendacion/', views.recomendacion, name='recomendacion'),
-    path('equipos_recomendados/', views.equipos_recomendados, name='equipos_recomendados'),
-    path('agregarRecomendacion/', views.agregarRecomendacion, name='agregarRecomendacion'),
+    path('equipos_recomendados/', views.equipos_recomendados,
+         name='equipos_recomendados'),
+    path('agregarRecomendacion/', views.agregarRecomendacion,
+         name='agregarRecomendacion'),
 
     # -------------------------------------------------------------------------------
 
     path('administrador/principal', views.admin_principal, name='admin_principal'),
 
     path('administrador/servicios', views.servicios, name='servicios'),
-    path('administrador/agregarServicios', views.agregarServicios, name='agregarServicios'),
-    path('administrador/servicios/<int:servicio_id>', views.editarServicios, name='editarServicios'),
-    path('administrador/servicios/<int:servicio_id>/eliminar', views.eliminarServicios, name='eliminarServicios'),
+    path('administrador/agregarServicios',
+         views.agregarServicios, name='agregarServicios'),
+    path('administrador/servicios/<int:servicio_id>',
+         views.editarServicios, name='editarServicios'),
+    path('administrador/servicios/<int:servicio_id>/eliminar',
+         views.eliminarServicios, name='eliminarServicios'),
 
     path('administrador/usuarios', views.usuarios, name='usuarios'),
-    path('administrador/agregarUsuarios', views.agregarUsuarios, name='agregarUsuarios'),
-    path('administrador/usuarios/<int:usuario_id>', views.editarUsuarios, name='editarUsuarios'),
-    path('administrador/usuarios/<int:usuario_id>/eliminar', views.eliminarUsuarios, name='eliminarUsuarios'),
+    path('administrador/agregarUsuarios',
+         views.agregarUsuarios, name='agregarUsuarios'),
+    path('administrador/usuarios/<int:usuario_id>',
+         views.editarUsuarios, name='editarUsuarios'),
+    path('administrador/usuarios/<int:usuario_id>/eliminar',
+         views.eliminarUsuarios, name='eliminarUsuarios'),
 
     path('administrador/tipos', views.tipos_equipos, name='tipos_equipos'),
     path('administrador/agregarTipos', views.agregarTipos, name='agregarTipos'),
-    path('administrador/tipos/<int:tipo_id>', views.editarTipos, name='editarTipos'),
-    path('administrador/tipos/<int:tipo_id>/eliminar', views.eliminarTipos, name='eliminarTipos'),
+    path('administrador/tipos/<int:tipo_id>',
+         views.editarTipos, name='editarTipos'),
+    path('administrador/tipos/<int:tipo_id>/eliminar',
+         views.eliminarTipos, name='eliminarTipos'),
 
     # --------------------------------------------------------------------------------
-    
+
     path('signin/', views.signin, name='signin'),
     path('logout/', views.signout, name='logout'),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

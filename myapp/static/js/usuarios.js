@@ -16,39 +16,39 @@ $(document).ready(function () {
         }
         return cookieValue;
     }
-    
+
     const csrftoken = getCookie('csrftoken');
 
     /****************************************************/
 
     $("tr #agregarUsuarios").click(function () {
         Swal.fire({
-            title:  'DATOS DE SERVICIOS',
+            title: 'DATOS DE SERVICIOS',
 
-            html:   '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Nombre</span>' +
-                        '<input type="text" id="firstname" class="form-control">' +
-                    '</div>' +
-                    
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Apellido</span>' +
-                        '<input type="text" id="lastname" class="form-control">' +
-                    '</div>' +
-                    
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Correo</span>' +
-                        '<input type="text" id="email" class="form-control">' +
-                    '</div>' +
-                    
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Username</span>' +
-                        '<input type="text" id="username" class="form-control">' +
-                    '</div>' +
-                    
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Contraseña</span>' +
-                        '<input type="password" id="password" class="form-control">' +
-                    '</div>',
+            html: '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Nombre</span>' +
+                '<input type="text" id="firstname" class="form-control">' +
+                '</div>' +
+
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Apellido</span>' +
+                '<input type="text" id="lastname" class="form-control">' +
+                '</div>' +
+
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Correo</span>' +
+                '<input type="text" id="email" class="form-control">' +
+                '</div>' +
+
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Username</span>' +
+                '<input type="text" id="username" class="form-control">' +
+                '</div>' +
+
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Contraseña</span>' +
+                '<input type="password" id="password" class="form-control">' +
+                '</div>',
 
             allowOutsideClick: false,
             showCancelButton: true,
@@ -82,13 +82,13 @@ $(document).ready(function () {
                         username: result.value.username,
                         password: result.value.password
                     },
-                    
-                    beforeSend: function(xhr) {
+
+                    beforeSend: function (xhr) {
                         if (!this.crossDomain) {
                             xhr.setRequestHeader("X-CSRFToken", csrftoken)
                         }
                     },
-                    
+
                     success: function (response) {
                         if (response.mensaje !== undefined && response.mensaje !== null) {
                             Swal.fire({
@@ -106,7 +106,7 @@ $(document).ready(function () {
                         }
                     },
 
-                    error: function() {
+                    error: function () {
                         Swal.fire('Error', 'Hubo un problema al registrar el usuario. Inténtalo de nuevo.', 'error');
                     }
                 })

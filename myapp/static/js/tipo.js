@@ -16,25 +16,25 @@ $(document).ready(function () {
         }
         return cookieValue;
     }
-    
+
     const csrftoken = getCookie('csrftoken');
 
     /****************************************************/
 
     $("tr #agregarTipo").click(function () {
-        
-        Swal.fire({
-            title:  'Datos de Tipos de Equipos',
 
-            html:   '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Nombre</span>' +
-                        '<input type="text" id="nombre" class="form-control">' +
-                    '</div>' +
-                    
-                    '<div class="input-group mb-3">' +
-                        '<input type="file" id="imagen" class="form-control" accept="image/*">' +
-                    '</div>',
-                    
+        Swal.fire({
+            title: 'Datos de Tipos de Equipos',
+
+            html: '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Nombre</span>' +
+                '<input type="text" id="nombre" class="form-control">' +
+                '</div>' +
+
+                '<div class="input-group mb-3">' +
+                '<input type="file" id="imagen" class="form-control" accept="image/*">' +
+                '</div>',
+
             focusConfirm: false,
             allowOutsideClick: false,
             showCancelButton: true,
@@ -44,7 +44,7 @@ $(document).ready(function () {
             preConfirm: () => {
                 const nombre = Swal.getPopup().querySelector('#nombre').value
                 const imagen = Swal.getPopup().querySelector('#imagen').files[0]
-                
+
                 if (!nombre | !imagen) {
                     Swal.showValidationMessage('¡Ingrese datos por favor!')
                 }
@@ -60,17 +60,17 @@ $(document).ready(function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/administrador/agregarTipos',              
+                    url: '/administrador/agregarTipos',
                     data: formData,
                     contentType: false,
                     processData: false,
-                    
-                    beforeSend: function(xhr) {
+
+                    beforeSend: function (xhr) {
                         if (!this.crossDomain) {
                             xhr.setRequestHeader("X-CSRFToken", csrftoken)
                         }
                     },
-                    
+
                     success: function (response) {
                         if (response.mensaje !== undefined && response.mensaje !== null) {
                             Swal.fire({
@@ -88,11 +88,11 @@ $(document).ready(function () {
                         }
                     },
 
-                    error: function() {
+                    error: function () {
                         Swal.fire('Error', 'Hubo un problema al registrar el tipo de equipo. Inténtalo de nuevo.', 'error')
                     }
                 });
-                
+
             } else {
                 Swal.fire("¡Registro no guardado!")
             }

@@ -26,10 +26,10 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Datos de Servicios',
 
-            html:   '<div class="input-group mb-3">' +
-                    '<span class="input-group-text">Nombre</span>' +
-                    '<input type="text" id="nombre" class="form-control" required>' +
-                    '</div>',
+            html: '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Nombre</span>' +
+                '<input type="text" id="nombre" class="form-control" required>' +
+                '</div>',
 
             focusConfirm: false,
             allowOutsideClick: false,

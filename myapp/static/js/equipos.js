@@ -25,25 +25,25 @@ $(document).ready(function () {
         Swal.fire({
             title: 'Datos de Equipos',
 
-            html:   '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Código SAP</span>' +
-                        '<input type="number" id="cod_sap" class="form-control">' +
-                    '</div>' +
+            html: '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Código SAP</span>' +
+                '<input type="number" id="cod_sap" class="form-control">' +
+                '</div>' +
 
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Serie</span>' +
-                        '<input type="text" id="serie" class="form-control">' +
-                    '</div>' +
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Serie</span>' +
+                '<input type="text" id="serie" class="form-control">' +
+                '</div>' +
 
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Descripción</span>' +
-                        '<input type="text" id="descripcion" class="form-control">' +
-                    '</div>' +
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Descripción</span>' +
+                '<input type="text" id="descripcion" class="form-control">' +
+                '</div>' +
 
-                    '<div class="input-group mb-3">' +
-                        '<span class="input-group-text">Cantidad</span>' +
-                        '<input type="number" id="cantidad" class="form-control">' +
-                    '</div>',
+                '<div class="input-group mb-3">' +
+                '<span class="input-group-text">Cantidad</span>' +
+                '<input type="number" id="cantidad" class="form-control">' +
+                '</div>',
 
             focusConfirm: false,
             allowOutsideClick: false,
